@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#123d70">
+  <meta name="description" content="แดชบอร์ดภาพรวมข้อมูลบุคลากร แสดงข้อมูลสรุปในรูปแบบที่เหมาะกับคอมพิวเตอร์และมือถือ">
+  <title>แดชบอร์ดข้อมูลบุคลากร</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">ข้ามไปยังเนื้อหาหลัก</a>
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="brand-mark" aria-hidden="true"><svg viewBox="0 0 48 48"><path d="M24 4 42 14v20L24 44 6 34V14Z" fill="none" stroke="currentColor" stroke-width="2.5"/><path d="M16 29V19m8 10V12m8 17V22M12 34h24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="3"/></svg></div>
+      <div class="hero-copy">
+        <p class="eyebrow">HR ANALYTICS • DASHBOARD</p>
+        <h1>แดชบอร์ดข้อมูลบุคลากร</h1>
+        <p class="hero-subtitle">ภาพรวมข้อมูลเพื่อการบริหารและวางแผนกำลังคน</p>
+      </div>
+      <div class="date-chip"><span class="date-icon" aria-hidden="true">▦</span><span><small>ข้อมูล ณ วันที่</small><strong id="updatedAt">24 ตุลาคม 2569</strong></span></div>
+    </div>
+    <div class="hero-ribbon"></div>
+  </header>
+
+  <main id="main" class="container">
+    <div class="notice" role="note"><span aria-hidden="true">ⓘ</span><div><strong>ข้อมูลตัวอย่างสำหรับสาธิต</strong><p>หน้านี้แสดงเฉพาะข้อมูลสรุป ไม่แสดงชื่อ รหัสพนักงาน เบอร์โทรศัพท์ หรืออีเมล โปรดตรวจสอบและเปลี่ยนชุดข้อมูลก่อนเผยแพร่เป็นข้อมูลจริง</p></div></div>
+    <section aria-labelledby="overview-title">
+      <div class="section-heading"><div><p class="section-kicker">OVERVIEW</p><h2 id="overview-title">ภาพรวมบุคลากร</h2></div><span class="live-tag"><i></i> สรุปข้อมูล</span></div>
+      <div class="kpi-grid">
+        <article class="kpi-card navy"><div class="kpi-icon" aria-hidden="true">♙</div><div><p>พนักงานทั้งหมด</p><strong id="totalEmployees">1,000</strong><small>ระเบียนในชุดข้อมูล</small></div></article>
+        <article class="kpi-card teal"><div class="kpi-icon" aria-hidden="true">▦</div><div><p>จำนวนแผนก</p><strong id="departmentCount">15</strong><small>หน่วยงานในข้อมูล</small></div></article>
+        <article class="kpi-card blue"><div class="kpi-icon" aria-hidden="true">◉</div><div><p>สถานะปฏิบัติงาน</p><strong id="activeCount">1,000</strong><small id="activePercent">100% ของทั้งหมด</small></div></article>
+        <article class="kpi-card violet"><div class="kpi-icon" aria-hidden="true">✓</div><div><p>ข้อมูลติดต่อครบ</p><strong id="contactComplete">0</strong><small>มีทั้งเบอร์โทรศัพท์และอีเมล</small></div></article>
+      </div>
+    </section>
+
+    <section class="charts-grid" aria-label="กราฟวิเคราะห์ข้อมูล">
+      <article class="panel prefix-panel">
+        <div class="panel-heading"><span class="panel-icon" aria-hidden="true">◔</span><div><h2>สัดส่วนคำนำหน้า</h2><p>แสดงสัดส่วนจากระเบียนทั้งหมด</p></div></div>
+        <div class="donut-wrap">
+          <div class="donut" id="prefixDonut" role="img" aria-label="กราฟโดนัทแสดงสัดส่วนคำนำหน้า"><div class="donut-center"><strong id="donutTotal">1,000</strong><span>คน</span></div></div>
+          <div class="legend" id="prefixLegend"></div>
+        </div>
+        <p class="panel-foot">คำนวณจากช่องคำนำหน้าในไฟล์ต้นทาง</p>
+      </article>
+
+      <article class="panel department-panel">
+        <div class="panel-heading"><span class="panel-icon" aria-hidden="true">▥</span><div><h2>จำนวนบุคลากรแยกตามแผนก</h2><p>เลือกแผนกเพื่อดูจำนวนและสัดส่วน</p></div></div>
+        <div class="filter-row"><label for="departmentFilter">กรองแผนก</label><select id="departmentFilter"><option value="all">ทุกแผนก</option></select><button id="resetFilter" class="text-button" type="button">ล้างตัวกรอง</button></div>
+        <div id="departmentChart" class="bar-chart" aria-label="กราฟแท่งจำนวนพนักงานแยกตามแผนก"></div>
+      </article>
+
+      <article class="panel status-panel">
+        <div class="panel-heading"><span class="panel-icon" aria-hidden="true">✓</span><div><h2>สถานะการปฏิบัติงาน</h2><p>ภาพรวมสถานะที่ระบุในไฟล์</p></div></div>
+        <div class="status-ring"><div><strong id="statusTotal">1,000</strong><span>คน</span></div></div>
+        <div class="status-summary"><span class="status-dot"></span><span id="statusLabel">ปฏิบัติงาน</span><strong id="statusPercent">100%</strong></div>
+        <p class="panel-foot">สถานะตามข้อมูลต้นทาง ไม่ใช่การยืนยันสถานะปัจจุบัน</p>
+      </article>
+    </section>
+
+    <section class="bottom-grid">
+      <article class="panel table-panel">
+        <div class="panel-heading"><span class="panel-icon" aria-hidden="true">▤</span><div><h2>ตารางสรุปข้อมูล</h2><p>ข้อมูลรวมที่ไม่ระบุตัวบุคคล</p></div></div>
+        <div class="table-scroll"><table><thead><tr><th>รายการ</th><th class="num">จำนวน</th><th class="num">ร้อยละ</th></tr></thead><tbody id="summaryTable"></tbody></table></div>
+      </article>
+      <article class="panel quality-panel">
+        <div class="panel-heading"><span class="panel-icon" aria-hidden="true">◎</span><div><h2>คุณภาพข้อมูล</h2><p>ช่องข้อมูลที่ยังไม่ได้กรอก</p></div></div>
+        <div id="qualityList" class="quality-list"></div>
+        <div class="recommendation"><strong>ข้อเสนอแนะ</strong><p>ควรตรวจสอบข้อมูลที่ว่างและกำหนดผู้รับผิดชอบปรับปรุงข้อมูลก่อนนำไปใช้วางแผนกำลังคน</p></div>
+      </article>
+    </section>
+
+    <footer class="footer"><span>แดชบอร์ดข้อมูลบุคลากร • เวอร์ชันสาธิต</span><span>Responsive Web App · ภาษาไทย</span></footer>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>
