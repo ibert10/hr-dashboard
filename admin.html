@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="th">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#123d70"><title>พื้นที่ผู้ดูแล | HR Dashboard</title><link rel="stylesheet" href="login.css"></head>
+<body>
+<main class="admin-shell">
+  <header class="admin-top"><div><p class="eyebrow">HR ANALYTICS • ADMIN</p><h1>พื้นที่ผู้ดูแลระบบ</h1><p class="muted">หน้านี้เข้าถึงได้เฉพาะบัญชีที่ได้รับสิทธิ์จากตาราง admin_users</p></div><button id="logout" class="secondary">ออกจากระบบ</button></header>
+  <section class="login-card wide">
+    <h2>สถานะบัญชี</h2><p id="who" class="muted">กำลังตรวจสอบสิทธิ์...</p>
+    <div class="notice"><strong>เวอร์ชันเริ่มต้น</strong><p>ระบบ Login และการตรวจสิทธิ์ Admin พร้อมต่อยอด แต่ยังไม่มีฟังก์ชันแก้ไขฐานข้อมูลหรืออัปโหลด Excel โดยตรง หน้านี้ไม่ควรใช้เก็บหรือแสดงข้อมูลส่วนบุคคล</p></div>
+    <a class="primary as-link" href="./index.html">เปิด Dashboard สาธารณะ</a>
+  </section>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="supabase-config.js"></script><script src="auth.js"></script>
+<script>
+(async()=>{try{const {data:{user}}=await window.sb.auth.getUser();if(!user){location.href='./login.html';return;}if(!(await isAdmin(user.id))){await window.sb.auth.signOut();location.href='./login.html';return;}document.getElementById('who').textContent='เข้าสู่ระบบเป็น: '+user.email+' • สิทธิ์ผู้ดูแลได้รับการยืนยัน';}catch(e){document.getElementById('who').textContent='ตรวจสอบไม่ได้: '+(e.message||'กรุณาตรวจสอบการตั้งค่า Supabase');}})();
+document.getElementById('logout').addEventListener('click',async()=>{await window.sb.auth.signOut();location.href='./login.html';});
+</script>
+</body></html>

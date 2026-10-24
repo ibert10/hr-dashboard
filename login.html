@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#123d70"><title>เข้าสู่ระบบผู้ดูแล | HR Dashboard</title>
+<link rel="stylesheet" href="login.css">
+</head>
+<body>
+<main class="shell">
+  <section class="brand">
+    <div class="mark" aria-hidden="true">▥</div>
+    <p class="eyebrow">HR ANALYTICS • ADMIN PORTAL</p>
+    <h1>ระบบผู้ดูแล<br>Dashboard บุคลากร</h1>
+    <p>เข้าสู่ระบบสำหรับผู้ดูแลที่ได้รับอนุญาตเท่านั้น</p>
+    <a href="./index.html" class="public-link">← กลับไป Dashboard สาธารณะ</a>
+  </section>
+  <section class="login-card">
+    <h2>เข้าสู่ระบบ</h2>
+    <p class="muted">ใช้อีเมลและรหัสผ่านที่ผู้ดูแลระบบกำหนดให้</p>
+    <form id="loginForm">
+      <label for="email">อีเมล</label>
+      <input id="email" name="email" type="email" autocomplete="username" required placeholder="name@agency.go.th">
+      <label for="password">รหัสผ่าน</label>
+      <div class="password-wrap"><input id="password" name="password" type="password" autocomplete="current-password" required minlength="8" placeholder="กรอกรหัสผ่าน"><button type="button" id="togglePassword" class="toggle">แสดง</button></div>
+      <button id="submitBtn" class="primary" type="submit">เข้าสู่ระบบ</button>
+      <p id="message" class="message" role="status" aria-live="polite"></p>
+    </form>
+    <form id="resetForm" class="reset-form">
+      <label for="resetEmail">ลืมรหัสผ่าน? กรอกอีเมลเพื่อขอลิงก์ตั้งรหัสผ่านใหม่</label>
+      <input id="resetEmail" type="email" placeholder="อีเมลที่ลงทะเบียน" required>
+      <button type="submit" class="secondary">ส่งลิงก์ตั้งรหัสผ่านใหม่</button>
+    </form>
+    <p class="small-note">ห้ามใช้บัญชีร่วมกัน และอย่าเปิดเผยรหัสผ่านแก่ผู้อื่น</p>
+  </section>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+<script src="auth.js"></script>
+<script>
+const form=document.getElementById('loginForm'), msg=document.getElementById('message'), btn=document.getElementById('submitBtn');
+document.getElementById('togglePassword').addEventListener('click',()=>{const p=document.getElementById('password');p.type=p.type==='password'?'text':'password';document.getElementById('togglePassword').textContent=p.type==='password'?'แสดง':'ซ่อน';});
+form.addEventListener('submit',async e=>{e.preventDefault();msg.textContent='';btn.disabled=true;btn.textContent='กำลังตรวจสอบ...';try{const email=document.getElementById('email').value.trim(),password=document.getElementById('password').value;const {data,error}=await window.sb.auth.signInWithPassword({email,password});if(error)throw error;const ok=await isAdmin(data.user.id);if(!ok){await window.sb.auth.signOut();throw new Error('บัญชีนี้ยังไม่ได้รับสิทธิ์ผู้ดูแล กรุณาติดต่อผู้รับผิดชอบระบบ');}location.href='./admin.html';}catch(err){msg.textContent=err.message||'เข้าสู่ระบบไม่สำเร็จ กรุณาตรวจสอบข้อมูล';msg.className='message error';}finally{btn.disabled=false;btn.textContent='เข้าสู่ระบบ';}});
+document.getElementById('resetForm').addEventListener('submit',async e=>{e.preventDefault();const email=document.getElementById('resetEmail').value.trim();const m=document.getElementById('message');try{const {error}=await window.sb.auth.resetPasswordForEmail(email,{redirectTo:location.origin+location.pathname.replace('login.html','update-password.html')});if(error)throw error;m.textContent='หากอีเมลนี้ลงทะเบียนไว้ ระบบจะส่งลิงก์ตั้งรหัสผ่านให้ กรุณาตรวจสอบกล่องจดหมาย';m.className='message';}catch(err){m.textContent='ส่งคำขอไม่สำเร็จ: '+(err.message||'โปรดลองอีกครั้ง');m.className='message error';}});
+</script>
+</body></html>
